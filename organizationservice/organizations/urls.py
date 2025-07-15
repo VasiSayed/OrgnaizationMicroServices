@@ -8,6 +8,7 @@ router.register(r'organizations', OrganizationViewSet)
 router.register(r'companies', CompanyViewSet)
 router.register(r'entities', EntityViewSet)
 
+
 urlpatterns = [
     path('user-orgnizationn-info/<int:user_id>/', UserAlloriginazitionINfo.as_view(), name='user-summary'),
     path('All-Info-Through-company-info/<int:company_id>/', CompanyInfoWithEntities.as_view()),

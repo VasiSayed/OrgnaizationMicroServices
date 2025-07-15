@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*","192.168.1.28", "localhost", "127.0.0.1","192.168.23.214",'192.168.16.214','192.168.16.214',"192.168.1.28",'192.168.1.11','192.168.78.214']
 
 
 
@@ -75,17 +75,44 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:3000",    
-    # "http://127.0.0.1:8000",
-    # "http://127.0.0.1:8001",
-    # "http://127.0.0.1:8002",
-    # # "http://127.0.0.1:8003",
+        "http://192.168.78.146:3000",
+
     "http://localhost:3000",    
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8002",
-    "http://127.0.0.1:8003",
-    "http://192.168.1.31:3000",
-    "http://192.168.1.5:3000" 
+    "http://192.168.1.31:3000",  # Prathamesh
+    "http://192.168.1.5:3000",   # Atharva
+    "http://192.168.1.12:3000",   # vasi
+    "http://192.168.1.23:3000",   # mohit
+    "http://192.168.16.146:3000",   # stharva
+
+
+    "http://192.168.1.28:8001",  # Microservice 1 on your machine
+    "http://192.168.1.28:8000",  # Microservice 2 on your machine
+    "http://192.168.1.28:8003",  # Microservice 3 on your machine
+    "http://192.168.23.116:3000",   # vasi
+    "http://192.168.1.23:3000",   # mohit
+
+    "http://192.168.16.146:3000", 
+      "http://192.168.1.11:3000",  # stharva
+    
+
+    "http://192.168.16.214:8000",
+    "http://192.168.16.116:3000",
+    "http://192.168.23.214:8001",  # Microservice 1 on your machine
+    "http://192.168.23.214:8000",  # Microservice 2 on your machine
+    "http://192.168.23.214:8003",  # Microservice 3 on your machine
+
+    "http:// 192.168.78.214:3000",
+    "http:// 192.168.78.214:3000",
+    
+    "http:// 192.168.78.214:8001",
+    "http:// 192.168.78.214:8000",
+    "http:// 192.168.78.214:8005",
+
+    "http://192.168.1.28:8001",  # Microservice 1 on your machine
+    "http://192.168.1.28:8000",  # Microservice 2 on your machine
+    "http://192.168.1.28:8003",
+    "http://192.168.1.28:8005",  # Microservice 3 on your machine
+  # Microservice 3 on your machine
 ]
 
 

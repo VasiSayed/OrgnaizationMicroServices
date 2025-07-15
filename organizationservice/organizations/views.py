@@ -58,6 +58,19 @@ class EntityViewSet(viewsets.ModelViewSet):
     serializer_class = EntitySerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print("Validation Errors:", serializer.errors)
+            return Response(serializer.errors, status=400)
+        serializer.is_valid(raise_exception=True)
+        company = serializer.save()
+        return Response({
+            'success': True,
+            'message': 'Company created successfully.',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
+    
     @action(detail=False, methods=['get'], url_path='by-user/(?P<user_id>[^/.]+)')
     def by_user(self, request, user_id=None):
         entities = self.get_queryset().filter(created_by=user_id)
@@ -225,3 +238,68 @@ class CompanyDetailsByOrganizationId(APIView):
         companies = Company.objects.filter(organization=organization)
         serializer = CompanySerializer(companies, many=True)
         return Response({'success': True, 'data': {'company': serializer.data}})
+    
+
+
+from rest_framework.permissions import IsAuthenticated
+
+PROJECT_SERVICE_URL = "http://192.168.1.28:8001"
+ORG_SERVICE_URL     = "http://192.168.1.28:8002"
+CHECKLIST_SERVICE_URL = "http://192.168.1.28:8005"
+USER_SERVICE_URL    = "http://192.168.1.28:8000"
+
+class DashboardAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        headers = {"Authorization": request.headers.get("Authorization", "")}
+        data = {}
+
+        if user.is_staff:  
+            users_res = requests.get(f"{USER_SERVICE_URL}/api/users/", headers=headers, timeout=3)
+            users = users_res.json()
+            data["all_users_count"] = len(users)
+
+            clients_res = requests.get(f"{USER_SERVICE_URL}/api/users/?is_client=true", headers=headers, timeout=3)
+            clients = clients_res.json()
+            data["all_clients_count"] = len(clients)
+
+            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/api/projects/", headers=headers, timeout=3)
+            projects = proj_res.json()
+            data["all_projects_count"] = len(projects)
+
+            org_res = requests.get(f"{ORG_SERVICE_URL}/api/organizations/", headers=headers, timeout=3)
+            organizations = org_res.json()
+            data["all_organizations_count"] = len(organizations)
+
+            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/api/checklists/", headers=headers, timeout=3)
+            checklists = checklist_res.json()
+            data["all_checklists_count"] = len(checklists)
+
+            data["recent_projects"] = projects[-5:] if len(projects) > 5 else projects
+            data["recent_checklists"] = checklists[-5:] if len(checklists) > 5 else checklists
+
+        elif user.is_client:
+            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/api/projects/?created_by={user.id}", headers=headers, timeout=3)
+            projects = proj_res.json()
+            data["my_projects_count"] = len(projects)
+            data["my_projects"] = projects
+
+            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/api/checklists/?created_by={user.id}", headers=headers, timeout=3)
+            checklists = checklist_res.json()
+            data["my_checklists_count"] = len(checklists)
+            data["my_checklists"] = checklists
+
+            if user.org:
+                org_res = requests.get(f"{ORG_SERVICE_URL}/api/organizations/{user.org}/", headers=headers, timeout=3)
+                if org_res.status_code == 200:
+                    data["my_organization"] = org_res.json()
+
+        else:
+            # Example: show accessible projects and checklists
+            access_res = requests.get(f"{USER_SERVICE_URL}/api/user-access/?user_id={user.id}", headers=headers, timeout=3)
+            accesses = access_res.json()
+            data["accesses"] = accesses
+
+        return Response(data)
