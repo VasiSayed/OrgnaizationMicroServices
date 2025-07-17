@@ -87,7 +87,7 @@ class UserAlloriginazitionINfo(APIView):
         if auth_header:
             headers["Authorization"] = auth_header
 
-        user_url = f'http://127.0.0.1:8000/api/users/{user_id}'
+        user_url = f'https//konstruct.world/users/{user_id}'
         try:
             user_response = requests.get(user_url, headers=headers, timeout=2)
             if user_response.status_code != 200:
@@ -243,10 +243,10 @@ class CompanyDetailsByOrganizationId(APIView):
 
 from rest_framework.permissions import IsAuthenticated
 
-PROJECT_SERVICE_URL = "http://192.168.1.28:8001"
-ORG_SERVICE_URL     = "http://192.168.1.28:8002"
-CHECKLIST_SERVICE_URL = "http://192.168.1.28:8005"
-USER_SERVICE_URL    = "http://192.168.1.28:8000"
+PROJECT_SERVICE_URL = "https://konstruct.world/projects/"  
+ORG_SERVICE_URL = "https://konstruct.world/organizations/"
+USER_SERVICE_URL = "https://konstruct.world/users/"
+CHECKLIST_SERVICE_URL = "https://konstruct.world/checklists/"
 
 class DashboardAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -257,23 +257,23 @@ class DashboardAPIView(APIView):
         data = {}
 
         if user.is_staff:  
-            users_res = requests.get(f"{USER_SERVICE_URL}/api/users/", headers=headers, timeout=3)
+            users_res = requests.get(f"{USER_SERVICE_URL}/users/", headers=headers, timeout=3)
             users = users_res.json()
             data["all_users_count"] = len(users)
 
-            clients_res = requests.get(f"{USER_SERVICE_URL}/api/users/?is_client=true", headers=headers, timeout=3)
+            clients_res = requests.get(f"{USER_SERVICE_URL}/users/?is_client=true", headers=headers, timeout=3)
             clients = clients_res.json()
             data["all_clients_count"] = len(clients)
 
-            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/api/projects/", headers=headers, timeout=3)
+            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/projects/", headers=headers, timeout=3)
             projects = proj_res.json()
             data["all_projects_count"] = len(projects)
 
-            org_res = requests.get(f"{ORG_SERVICE_URL}/api/organizations/", headers=headers, timeout=3)
+            org_res = requests.get(f"{ORG_SERVICE_URL}/organizations/", headers=headers, timeout=3)
             organizations = org_res.json()
             data["all_organizations_count"] = len(organizations)
 
-            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/api/checklists/", headers=headers, timeout=3)
+            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/checklists/", headers=headers, timeout=3)
             checklists = checklist_res.json()
             data["all_checklists_count"] = len(checklists)
 
@@ -281,24 +281,24 @@ class DashboardAPIView(APIView):
             data["recent_checklists"] = checklists[-5:] if len(checklists) > 5 else checklists
 
         elif user.is_client:
-            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/api/projects/?created_by={user.id}", headers=headers, timeout=3)
+            proj_res = requests.get(f"{PROJECT_SERVICE_URL}/projects/?created_by={user.id}", headers=headers, timeout=3)
             projects = proj_res.json()
             data["my_projects_count"] = len(projects)
             data["my_projects"] = projects
 
-            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/api/checklists/?created_by={user.id}", headers=headers, timeout=3)
+            checklist_res = requests.get(f"{CHECKLIST_SERVICE_URL}/checklists/?created_by={user.id}", headers=headers, timeout=3)
             checklists = checklist_res.json()
             data["my_checklists_count"] = len(checklists)
             data["my_checklists"] = checklists
 
             if user.org:
-                org_res = requests.get(f"{ORG_SERVICE_URL}/api/organizations/{user.org}/", headers=headers, timeout=3)
+                org_res = requests.get(f"{ORG_SERVICE_URL}/organizations/{user.org}/", headers=headers, timeout=3)
                 if org_res.status_code == 200:
                     data["my_organization"] = org_res.json()
 
         else:
             # Example: show accessible projects and checklists
-            access_res = requests.get(f"{USER_SERVICE_URL}/api/user-access/?user_id={user.id}", headers=headers, timeout=3)
+            access_res = requests.get(f"{USER_SERVICE_URL}/user-access/?user_id={user.id}", headers=headers, timeout=3)
             accesses = access_res.json()
             data["accesses"] = accesses
 
