@@ -19,9 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*","192.168.1.28", "localhost", "127.0.0.1","192.168.23.214",'192.168.16.214','192.168.16.214',"192.168.1.28",'192.168.1.11','192.168.78.214']
+ALLOWED_HOSTS = ["*",'192.168.29.168', " 192.168.29.239","192.168.1.28", "localhost", "127.0.0.1","192.168.23.214",'192.168.16.214','192.168.16.214',"192.168.1.28",'192.168.1.11','192.168.78.214']
 
 
 
@@ -112,7 +112,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.28:8000",  # Microservice 2 on your machine
     "http://192.168.1.28:8003",
     "http://192.168.1.28:8005",  # Microservice 3 on your machine
+    "https://konstruct.world",
   # Microservice 3 on your machine
+'http://127.0.0.1:8001',
+    'http://127.0.0.1:8002',
+    'http://127.0.0.1:8003',
+    'http://127.0.0.1:8000',
 ]
 
 
@@ -199,3 +204,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['file', 'console'],
+        'level': 'INFO',
+    },
+}
