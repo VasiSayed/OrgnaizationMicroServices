@@ -84,6 +84,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.23:3000",   # mohit
     "http://192.168.16.146:3000",   # stharva
 
+    "http://192.168.29.239:8000",  # Microservice 1 on your machine
+    "http://192.168.29.239:8001",  # Microservice 2 on your machine
+    "http://192.168.29.239:8003",
 
     "http://192.168.1.28:8001",  # Microservice 1 on your machine
     "http://192.168.1.28:8000",  # Microservice 2 on your machine

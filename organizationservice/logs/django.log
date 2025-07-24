@@ -273,3 +273,13 @@
 [2025-07-22 15:26:05,559] WARNING django.request Unauthorized: /api/organizations/72/
 [2025-07-22 15:26:05,577] WARNING django.request Unauthorized: /api/organizations/72/
 [2025-07-22 17:19:39,929] WARNING django.request Unauthorized: /api/organizations/66/
+[2025-07-23 09:51:48,199] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-07-23 09:58:52,426] INFO django.utils.autoreload D:\VC Work\MicroServices\OrganizationService\organizationservice\organizationservice\settings.py changed, reloading.
+[2025-07-23 09:58:58,535] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-07-24 00:02:10,892] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-07-24 00:57:25,633] WARNING django.request Unauthorized: /api/organizations/by-user/45/
+[2025-07-24 00:57:25,668] WARNING django.request Unauthorized: /api/organizations/by-user/45/
+[2025-07-24 09:55:01,799] INFO django.utils.autoreload Watching for file changes with StatReloader
+[2025-07-24 11:00:13,384] WARNING django.request Unauthorized: /api/organizations/74/
+[2025-07-24 11:00:13,430] WARNING django.request Unauthorized: /api/organizations/74/
+[2025-07-24 11:28:56,088] WARNING django.request Unauthorized: /api/organizations/74/
